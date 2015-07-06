@@ -7,7 +7,7 @@ import br.com.caelum.agiletickets.models.TipoDeEspetaculo;
 
 public class CalculadoraDePrecos {
 	
-	private static final double PERCENTUAL_LIMITE_BALLET = 0.5;
+	private static final double PERCENTUAL_LIMITE_BALLET_OU_ORQUESTRA = 0.5;
 	private static final double PERCENTUAL_10 = 0.10;
 	private static final double PERCENTUAL_LIMITE_CINEMA_OU_SHOW = 0.05;
 	private static final double PERCENTUAL_20 = 0.2;
@@ -47,18 +47,19 @@ public class CalculadoraDePrecos {
 				preco = sessao.getPreco();
 			}
 		} else if(ehBallet(sessao)) {
-			if(percentualIngressosRestantesMenorQue(sessao, PERCENTUAL_LIMITE_BALLET)) { 
+			if(percentualIngressosRestantesMenorQue(sessao, PERCENTUAL_LIMITE_BALLET_OU_ORQUESTRA)) { 
 				preco = aumentaPrecoIngresso(sessao.getPreco(), PERCENTUAL_20);
 			} else {
 				preco = sessao.getPreco();
 			}
 			
-			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = preco.add(sessao.getPreco().multiply(BigDecimal.valueOf(0.10)));
+			boolean sessaoTemMaisDeUmaHora = sessao.getDuracaoEmMinutos() > 60;
+			if(sessaoTemMaisDeUmaHora){
+				preco = aumentaPrecoIngresso(preco, PERCENTUAL_10);
 			}
 		} else if(ehOrquestra(sessao)) {
-			if((sessao.getTotalIngressos() - sessao.getIngressosReservados()) / sessao.getTotalIngressos().doubleValue() <= 0.50) { 
-				preco = sessao.getPreco().add(sessao.getPreco().multiply(BigDecimal.valueOf(0.20)));
+			if(percentualIngressosRestantesMenorQue(sessao, PERCENTUAL_LIMITE_BALLET_OU_ORQUESTRA)) { 
+				preco = aumentaPrecoIngresso(sessao.getPreco(), PERCENTUAL_20);
 			} else {
 				preco = sessao.getPreco();
 			}
