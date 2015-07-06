@@ -42,30 +42,30 @@ public class CalculadoraDePrecos {
 		if(ehCinema(sessao) || ehShow(sessao)) {
 			//quando estiver acabando os ingressos... 
 			if(percentualIngressosRestantesMenorQue(sessao, PERCENTUAL_LIMITE_CINEMA_OU_SHOW)) { 
-				preco = aumentaPrecoIngresso(sessao.getPreco(), calculaDesconto(sessao.getPreco(), PERCENTUAL_10));
+				preco = aumentaPrecoIngresso(sessao.getPreco(), calculaAumento(sessao.getPreco(), PERCENTUAL_10));
 			} else {
 				preco = sessao.getPreco();
 			}
 		} else if(ehBallet(sessao)) {
 			if(percentualIngressosRestantesMenorQue(sessao, PERCENTUAL_LIMITE_BALLET_OU_ORQUESTRA)) { 
-				preco = aumentaPrecoIngresso(sessao.getPreco(), calculaDesconto(sessao.getPreco(), PERCENTUAL_20));
+				preco = aumentaPrecoIngresso(sessao.getPreco(), calculaAumento(sessao.getPreco(), PERCENTUAL_20));
 			} else {
 				preco = sessao.getPreco();
 			}
 			
 			boolean sessaoTemMaisDeUmaHora = sessao.getDuracaoEmMinutos() > 60;
 			if(sessaoTemMaisDeUmaHora){
-				preco = aumentaPrecoIngresso(preco, calculaDesconto(preco, PERCENTUAL_10));
+				preco = aumentaPrecoIngresso(preco, calculaAumento(preco, PERCENTUAL_10));
 			}
 		} else if(ehOrquestra(sessao)) {
 			if(percentualIngressosRestantesMenorQue(sessao, PERCENTUAL_LIMITE_BALLET_OU_ORQUESTRA)) { 
-				preco = aumentaPrecoIngresso(sessao.getPreco(), calculaDesconto(sessao.getPreco(), PERCENTUAL_20));
+				preco = aumentaPrecoIngresso(sessao.getPreco(), calculaAumento(sessao.getPreco(), PERCENTUAL_20));
 			} else {
 				preco = sessao.getPreco();
 			}
 
 			if(sessao.getDuracaoEmMinutos() > 60){
-				preco = aumentaPrecoIngresso(preco, calculaDesconto(sessao.getPreco(), PERCENTUAL_10));
+				preco = aumentaPrecoIngresso(preco, calculaAumento(sessao.getPreco(), PERCENTUAL_10));
 			}
 		}  else {
 			//nao aplica aumento para teatro (quem vai é pobretão)
@@ -75,7 +75,7 @@ public class CalculadoraDePrecos {
 		return preco.multiply(BigDecimal.valueOf(quantidade));
 	}
 
-	private static BigDecimal calculaDesconto(BigDecimal precoAtual, double percentualDesconto) {
+	private static BigDecimal calculaAumento(BigDecimal precoAtual, double percentualDesconto) {
 		return precoAtual.multiply(BigDecimal.valueOf(percentualDesconto));
 	}
 	
